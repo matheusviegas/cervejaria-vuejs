@@ -2,40 +2,37 @@
 
   <div>
   <v-list two-line subheader>
-    <v-subheader inset>Shopping Cart</v-subheader>
+    <v-subheader class="titulo-shopping-cart">Carrinho</v-subheader>
 
     <v-list-tile
       v-for="beer in beers"
       :key="beer.id"
       avatar
       @click=""
+      class="item-lista"
     >
       <v-list-tile-avatar>
         <img :src="beer.image_url">
       </v-list-tile-avatar>
       <v-list-tile-content>
         <v-list-tile-title>{{ beer.name }}</v-list-tile-title>
-        <v-list-tile-sub-title>Quantidade: {{ beer.quantity }}</v-list-tile-sub-title>
-        <div class="addRemove">
-          <button class="btn" v-on:click="beer.quantity++"><i class="fa fa-plus-circle"></i></button>
-          <button class="btn" v-on:click="beer.quantity > 1 ? beer.quantity-- : beer.quantity = beer.quantity"><i class="fa fa-minus-circle"></i></button>
-          <button class="btn btn-remover" v-on:click="removerItem(beer)"><i class="fa fa-trash"></i></button>
-        </div>
-
+        <input type="number" value="1" min="1" class="qtd" v-model="beer.quantity" />
       </v-list-tile-content>
 
       <v-list-tile-action>
         <v-btn icon ripple>
-          <v-icon color="grey lighten-1">info</v-icon>
+          <v-icon color="red lighten-1" v-on:click="removerItem(beer)">close</v-icon>
         </v-btn>
       </v-list-tile-action>
     </v-list-tile>
-
-    <v-divider inset></v-divider>
   </v-list>
 
   <div class="totalizador">
-    Total: R$ {{ total.toFixed(2) }}
+    <span v-bind:class="{ riscado: temDesconto }">Total: R$ {{ total.toFixed(2) }}</span>
+    <br /><span v-show="temDesconto">Desconto: R$ {{ calculaDesconto.valorDesconto.toFixed(2) }} (10%)</span>
+    <br /><span v-show="temDesconto">Total a Pagar: R$ {{ calculaDesconto.totalComDesconto.toFixed(2) }}</span>
+    <br />
+    
   </div>
   </div>
 </template>
@@ -56,6 +53,20 @@ export default {
         soma += Number(b.quantity * b.price);
       }
       return soma;
+    },
+    temDesconto() {
+      let qtd = 0;
+      for (let x = 0; x < store.state.beers.length; x++) {
+        qtd += Number(store.state.beers[x].quantity);
+      }
+      return qtd >= 10;
+    }, 
+    calculaDesconto() {
+      let desconto = this.total * 0.10;
+      return {
+        valorDesconto: desconto,
+        totalComDesconto: (this.total - desconto)
+      };
     }
   },
   methods: {
@@ -95,5 +106,30 @@ export default {
   font-size: 16px;
   font-weight: bold;
   padding: 15px;
+  background: #d9d9d933;
+  width: 100%;
+  border-top: 1px solid #dededed4;
 }
+
+.qtd {
+  border: 1px solid #dedede;
+  width: 50px;
+  padding: 0 5px;
+}
+
+.item-lista {
+  border-top: 1px solid #dedede;
+}
+
+.titulo-shopping-cart {
+  font-size: 18px;
+  font-weight: bold;
+ justify-content: center;
+}
+
+.riscado {
+  text-decoration: line-through;
+  color: #9e9e9e;
+}
+
 </style>
