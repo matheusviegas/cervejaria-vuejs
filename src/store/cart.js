@@ -13,7 +13,6 @@ export default new Vuex.Store({
   },
   mutations: {
     addToCart(state, beer) {
-
       let index = findIndex(state.beers, (o) => o.id == beer.id)
 
       if (index === -1) {
@@ -27,7 +26,12 @@ export default new Vuex.Store({
       } else {
         state.beers[index].quantity++;
       }
-
+    },
+    removeFromCart(state, beer) {
+      var index = state.beers.indexOf(beer);
+      if (index > -1) {
+        state.beers.splice(index, 1);
+      }
     }
   },
   actions: {

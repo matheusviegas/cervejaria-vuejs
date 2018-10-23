@@ -20,8 +20,8 @@
       </v-list-tile-content>
 
       <v-list-tile-action>
-        <v-btn icon ripple>
-          <v-icon color="red lighten-1" v-on:click="removerItem(beer)">close</v-icon>
+        <v-btn icon ripple v-on:click="removerItem(beer)">
+          <v-icon color="red lighten-1">close</v-icon>
         </v-btn>
       </v-list-tile-action>
     </v-list-tile>
@@ -29,10 +29,8 @@
 
   <div class="totalizador">
     <span v-bind:class="{ riscado: temDesconto }">Total: R$ {{ total.toFixed(2) }}</span>
-    <br /><span v-show="temDesconto">Desconto: R$ {{ calculaDesconto.valorDesconto.toFixed(2) }} (10%)</span>
-    <br /><span v-show="temDesconto">Total a Pagar: R$ {{ calculaDesconto.totalComDesconto.toFixed(2) }}</span>
-    <br />
-    
+    <br v-if="temDesconto" /><span v-if="temDesconto">Desconto: R$ {{ calculaDesconto.valorDesconto.toFixed(2) }} (10%)</span>
+    <br v-if="temDesconto" /><span v-if="temDesconto">Total a Pagar: R$ {{ calculaDesconto.totalComDesconto.toFixed(2) }}</span>   
   </div>
   </div>
 </template>
@@ -70,20 +68,14 @@ export default {
     }
   },
   methods: {
-    removerItem: function(beer) {
-      var index = store.state.beers.indexOf(beer);
-      if (index > -1) {
-        store.state.beers.splice(index, 1);
-      }
+    removerItem(beer) {
+      store.commit("removeFromCart", beer);
     }
   }
 };
 </script>
 
 <style scoped>
-.addRemove {
-}
-
 .btn {
   background: #fefefe;
   border: 1px solid #dedede;
