@@ -34,6 +34,15 @@ export default new Vuex.Store({
       }
     }
   },
+  getters: {
+    quantidadeCervejasCarrinho: state => {
+      let qtd = 0;
+      for (let x = 0; x < state.beers.length; x++) {
+        qtd += Number(state.beers[x].quantity);
+      }
+      return qtd;
+    }
+  },
   actions: {
 
   }

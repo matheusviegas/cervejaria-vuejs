@@ -6,8 +6,8 @@
     <v-toolbar app :clipped-left="clipped">
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
+      <v-btn @click.stop="rightDrawer = !rightDrawer">
+        <span class="quantidade-cervejas">{{ quantidadeCervejas }}</span><v-icon>shopping_cart</v-icon>
       </v-btn>
     </v-toolbar>
 
@@ -27,6 +27,7 @@
 
 <script>
 import CartList from "./components/CartList.vue";
+import store from "@/store/cart.js";
 
 export default {
   name: "App",
@@ -47,8 +48,19 @@ export default {
       title: "Beer Company"
     };
   },
+  computed: {
+    quantidadeCervejas() {
+      return store.getters.quantidadeCervejasCarrinho;
+    }
+  },
   components: {
     CartList
   }
 };
 </script>
+<style scoped>
+  .quantidade-cervejas {
+    font-weight: bold;
+    font-size: 16px;
+  }
+</style>

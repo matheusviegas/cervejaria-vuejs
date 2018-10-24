@@ -2,10 +2,18 @@
   <div>
     <v-container grid-list-md>
       <v-layout row wrap>
-        <!-- Laço com os dados de cervejas -->
-        <!-- Notem que usamos a id devido ao object observer -->
+
+          <div v-show="beers.length == 0" class="loader">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="grey"
+              indeterminate
+            ></v-progress-circular>
+          </div>
+         
+        
         <v-flex v-for="beer in beers" :key="beer.id" xs4>
-          <!-- Passamos a prop com a nossa cerveja específica para ser renderizada no card. -->
           <BeerCard :beer="beer" />
         </v-flex>
       </v-layout>
@@ -36,3 +44,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .loader {
+    position: absolute;
+    left: calc(50% - 35px);
+    top: calc(50% - 35px);
+  }
+</style>
+
