@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersist from 'vuex-persist'
+
+const vuexPersist = new VuexPersist({
+  key: 'cervejaria-vuejs',
+  storage: localStorage
+})
 
 import {
   findIndex
@@ -9,7 +15,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     beers: [],
-    qty: 0
+    qty: 0,
+    alertMessage: {
+      text:'',
+      type: ''
+    }
   },
   mutations: {
     addToCart(state, beer) {
@@ -32,6 +42,16 @@ export default new Vuex.Store({
       if (index > -1) {
         state.beers.splice(index, 1);
       }
+    },
+    changeQuantity(state, beer) {
+      let index = findIndex(state.beers, (o) => o.id == beer.id);
+
+      if (index !== -1) {
+        state.beers[index].quantity = beer.quantity;
+      }
+    },
+    setAlertMessage(state, message) {
+      state.alertMessage = message;
     }
   },
   getters: {
@@ -41,9 +61,13 @@ export default new Vuex.Store({
         qtd += Number(state.beers[x].quantity);
       }
       return qtd;
+    },
+    alertMessage: state => {
+      return state.alertMessage;
     }
   },
   actions: {
 
-  }
+  },
+  plugins: [vuexPersist.plugin]
 })

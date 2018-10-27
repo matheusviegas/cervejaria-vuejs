@@ -19,7 +19,7 @@ export default new Router({
       component: Checkout
     },
     {
-      path: '/beer-details',
+      path: '/beer-details/:id',
       name: 'beer-details',
       component: BeerDetails
     }
