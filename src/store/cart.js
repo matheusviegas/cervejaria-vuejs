@@ -16,6 +16,7 @@ export default new Vuex.Store({
   state: {
     beers: [],
     qty: 0,
+    searchText: '',
     alertMessage: {
       text:'',
       type: ''
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     setAlertMessage(state, message) {
       state.alertMessage = message;
+    },
+    setSearchText(state, text) {
+      state.searchText = text;
     }
   },
   getters: {
@@ -64,6 +68,9 @@ export default new Vuex.Store({
     },
     alertMessage: state => {
       return state.alertMessage;
+    },
+    searchText: state => {
+      return state.searchText;
     }
   },
   actions: {

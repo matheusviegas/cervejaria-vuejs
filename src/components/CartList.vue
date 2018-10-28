@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list two-line subheader>
+    <v-list two-line subheader class="lista-carrinho" :class="{listaCarrinhoSemDesconto: !temDesconto}">
       <v-subheader class="titulo-shopping-cart">Carrinho</v-subheader>
 
       <v-list-tile
@@ -15,7 +15,7 @@
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title>{{ beer.name }}</v-list-tile-title>
-          <input @input.prevent="alteraQuantidade(beer)" type="number" value="1" min="1" class="qtd" v-model="beer.quantity" />
+          <input @click.stop.prevent="" @input.prevent="alteraQuantidade(beer)" type="number" value="1" min="1" class="qtd" v-model="beer.quantity" />
         </v-list-tile-content>
 
         <v-list-tile-action>
@@ -176,5 +176,14 @@ export default {
 .riscado {
   text-decoration: line-through;
   color: #9e9e9e;
+}
+
+.listaCarrinhoSemDesconto {
+  max-height: calc(100vh - 55px) !important;
+}
+
+.lista-carrinho {
+  max-height: calc(100vh - 103px);
+  overflow: auto;
 }
 </style>

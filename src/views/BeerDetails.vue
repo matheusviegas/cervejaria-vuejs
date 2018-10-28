@@ -1,7 +1,7 @@
 <template>
         <v-container grid-list-md>
             <v-layout>
-                <v-flex xs12 sm6 offset-sm3>
+                <v-flex xs12>
                     <v-card>
                         <v-container grid-list-md class="cerveja">
                             <v-layout row wrap>
