@@ -37,13 +37,12 @@ import store from '@/store/cart.js';
 
 export default {
   created() {
+
     store.watch(
       function(state) {
         state.searchText;
       },
       () => {
-        console.log(store.getters.searchText);
-
         let msg = store.getters.searchText;
         if (msg !== "") {
           this.search = msg;
@@ -74,7 +73,7 @@ export default {
   methods: {
     findBeers(page, perPage) {
       axios.get("https://api.punkapi.com/v2/beers?brewed_before=11-2012&abv_gt=6&page=" +
-      page + "&per_page=" + perPage + (this.search.length > 0 ? ('&beer_name=' + this.search) : ''))
+      page + "&per_page=" + perPage + (this.reset ? '' : this.search.length > 0 ? ('&beer_name=' + this.search) : ''))
       .then((response) => {
         this.beers = response.data;
         this.page = page;
@@ -89,6 +88,10 @@ export default {
     page: function(page) {
       this.beers = [];
       this.findBeers(page, 18);
+    }
+  }, computed: {
+    reset() {
+      return this.$route.params.reset;
     }
   }
 };

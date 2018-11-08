@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-list two-line subheader class="lista-carrinho" :class="{listaCarrinhoSemDesconto: !temDesconto}">
-      <v-subheader class="titulo-shopping-cart">Carrinho</v-subheader>
+      <v-subheader v-if="header" class="titulo-shopping-cart">Carrinho</v-subheader>
 
       <v-list-tile
         v-for="beer in beers"
@@ -26,10 +26,13 @@
       </v-list-tile>
     </v-list>
 
-    <div class="totalizador">
-      <span v-bind:class="{ riscado: temDesconto }">Total: R$ {{ total.toFixed(2) }}</span>
-      <br v-if="temDesconto" /><span v-if="temDesconto">Desconto: R$ {{ calculaDesconto.valorDesconto.toFixed(2) }} (10%)</span>
-      <br v-if="temDesconto" /><span v-if="temDesconto">Total a Pagar: R$ {{ calculaDesconto.totalComDesconto.toFixed(2) }}</span>
+    <div class="totalizador" :class="{fixed : fixedSum}">
+      <div class="totalizador_valores">
+        <span v-bind:class="{ riscado: temDesconto }">Total: R$ {{ total.toFixed(2) }}</span>
+        <br v-if="temDesconto" /><span v-if="temDesconto">Desconto: R$ {{ calculaDesconto.valorDesconto.toFixed(2) }} (10%)</span>
+        <br v-if="temDesconto" /><span v-if="temDesconto">Total a Pagar: R$ {{ calculaDesconto.totalComDesconto.toFixed(2) }}</span>
+      </div>
+      <v-btn v-if="header" color="#333333" class="btn_pedido" dark @click="navegarParaCarrinho">Finalizar Pedido</v-btn>
     </div>
 
     <!-- Dialogo de Confirmação de Exclusão -->
@@ -79,6 +82,10 @@ import store from "@/store/cart.js";
 import ShowAlert from '@/plugins/ShowAlert';
 
 export default {
+  props: {
+    header: Boolean,
+    fixedSum: Boolean
+  },
   data() {
     return {
       dialog: false,
@@ -124,6 +131,9 @@ export default {
     },
     alteraQuantidade(beer) {
       store.commit("changeQuantity", beer);
+    },
+    navegarParaCarrinho() {
+      this.$router.push({ name: "checkout" });
     }
   }
 };
@@ -146,15 +156,8 @@ export default {
   background: red;
 }
 
-.totalizador {
+.fixed {
   position: absolute;
-  bottom: 0;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 15px;
-  background: #d9d9d933;
-  width: 100%;
-  border-top: 1px solid #dededed4;
 }
 
 .qtd {
@@ -185,5 +188,28 @@ export default {
 .lista-carrinho {
   max-height: calc(100vh - 103px);
   overflow: auto;
+}
+
+.totalizador {
+  bottom: 0;
+  font-size: 16px;
+  font-weight: bold;
+  background: #d9d9d933;
+  width: 100%;
+  border-top: 1px solid #dededed4;
+}
+
+.totalizador_valores {
+  padding: 15px;
+}
+
+.btn_pedido {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #2a2a2a;
+  font-weight: bold;
+  margin: 0;
+  border-radius: 0;
+  height: 45px;
 }
 </style>

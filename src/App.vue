@@ -11,7 +11,7 @@
           </v-flex>
 
         <v-flex xs9>
-          <router-view class="np" />
+          <router-view class="np" :key="$route.path" />
         </v-flex>
 
         <Alerta />
@@ -19,7 +19,7 @@
 
 
     <v-navigation-drawer temporary :right="right" v-model="rightDrawer" fixed app>
-      <cartList />
+      <CartList :header="true" :fixedSum="true" />
     </v-navigation-drawer>
 
     <v-toolbar
@@ -30,7 +30,7 @@
       fixed
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-        <v-btn icon :to="{name: 'home'}"><v-icon>home</v-icon></v-btn>
+        <v-btn icon @click="reload"><v-icon>home</v-icon></v-btn>
         <span class="hidden-sm-and-down">Cervejaria VueJS</span>
       </v-toolbar-title>
       <v-text-field
@@ -96,6 +96,10 @@ export default {
     },
     updateSearchText() {
       store.commit('setSearchText', this.search);
+    },
+    reload() {
+      window.location = '/';
+      store.commit('setSearchText', '');
     }
   }
 };

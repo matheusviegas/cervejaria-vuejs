@@ -16,6 +16,8 @@ export default new Vuex.Store({
   state: {
     beers: [],
     qty: 0,
+    token: '',
+    user: {},
     searchText: '',
     alertMessage: {
       text:'',
@@ -56,6 +58,15 @@ export default new Vuex.Store({
     },
     setSearchText(state, text) {
       state.searchText = text;
+    },
+    setToken(state, token) {
+      state.token = token;
+    },
+    setUser(state, user) {
+      state.user = user;
+    },
+    reset(state) {
+      state.beers = [];
     }
   },
   getters: {
@@ -71,10 +82,35 @@ export default new Vuex.Store({
     },
     searchText: state => {
       return state.searchText;
+    },
+    token: state => {
+      return state.token;
+    },
+    user: state => {
+      return state.user;
+    },
+    totalPedido(state) {
+      let soma = 0;
+      for (let x = 0; x < state.beers.length; x++) {
+        let b = state.beers[x];
+        soma += Number(b.quantity * b.price);
+      }
+
+      let desconto = soma * 0.1;
+      return {
+        valorTotal: soma,
+        valorDesconto: desconto,
+        totalComDesconto: soma - desconto
+      }
+    },
+    itensCarrinho(state) {
+      return state.beers;
     }
   },
   actions: {
-
+    resetarCarrinho(context) {
+      context.commit('reset');
+    }
   },
   plugins: [vuexPersist.plugin]
 })
